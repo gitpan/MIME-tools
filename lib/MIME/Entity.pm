@@ -234,7 +234,6 @@ use MIME::Tools qw(:config :msgs :utils);
 use MIME::Head;
 use MIME::Body;
 use MIME::Decoder;
-use IO::Lines;
 
 @ISA = qw(Mail::Internet);
 
@@ -246,7 +245,7 @@ use IO::Lines;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.428";
+$VERSION = "5.500";
 
 ### Boundary counter:
 my $BCount = 0;

@@ -27,7 +27,6 @@ requires:
   File::Temp: 0.18
   IO::File: 1.13
   IO::Handle: 0
-  IO::Stringy: 2.11
   MIME::Base64: 2.2
   Mail::Field: 1.05
   Mail::Header: 1.01
@@ -35,4 +34,4 @@ requires:
   perl: 5.8.0
 resources:
   license: http://dev.perl.org/licenses/
-version: 5.428
+version: 5.500
