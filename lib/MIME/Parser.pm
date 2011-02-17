@@ -153,7 +153,7 @@ use MIME::Parser::Results;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.500";
+$VERSION = "5.501";
 
 ### How to catenate:
 $CAT = '/bin/cat';
@@ -625,7 +625,7 @@ sub process_header {
 
     my $headstr = '';
     open(my $outfh, '>:scalar', \$headstr) or die $!;
-    $hdr_rdr->read_chunk($in, $outfh);
+    $hdr_rdr->read_chunk($in, $outfh, 0, 1);
     close $outfh;
 
     ### How did we do?
@@ -1118,7 +1118,7 @@ sub parse_data {
         $io = IO::File->new($data, '<:');
     } elsif( ref $data eq 'ARRAY' ) {
 	# Passing arrays is deprecated now that we've nuked IO::ScalarArray
-	# but for backwards compatibility we still support it by joining the
+	# but for backwards compatability we still support it by joining the
 	# array lines to a scalar and doing scalar IO on it.
 	my $tmp_data = join('', @$data);
 	$io = IO::File->new(\$tmp_data, '<:');

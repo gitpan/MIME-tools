@@ -93,7 +93,7 @@ use MIME::QuotedPrint;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.500";
+$VERSION = "5.501";
 
 ### Nonprintables (controls + x7F + 8bit):
 my $NONPRINT = "\\x00-\\x1F\\x7F-\\xFF";
@@ -173,6 +173,7 @@ Any arguments past the ENCODED string are taken to define a hash of options:
 sub decode_mimewords {
     my $encstr = shift;
     my @tokens;
+    local($1,$2,$3);
     $@ = '';           ### error-return
 
     ### Collapse boundaries between adjacent encoded words:
@@ -211,7 +212,7 @@ sub decode_mimewords {
 	### Case 3: are we looking at ordinary text?
 	pos($encstr) = $pos;               # reset the pointer.
 	if ($encstr =~ m{\G                # from where we left off...
-			 ([\x00-\xFF]*?    #   shortest possible string,
+			 (.*?    #   shortest possible string,
 			  \n*)             #   followed by 0 or more NLs,
 		         (?=(\Z|=\?))      # terminated by "=?" or EOS
 			}xg) {

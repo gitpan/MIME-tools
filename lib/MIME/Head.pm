@@ -1,6 +1,6 @@
 package MIME::Head;
 
-
+use MIME::WordDecoder;
 =head1 NAME
 
 MIME::Head - MIME message header (a subclass of Mail::Header)
@@ -138,7 +138,7 @@ use MIME::Field::ContType;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.500";
+$VERSION = "5.501";
 
 ### Sanity (we put this test after our own version, for CPAN::):
 use Mail::Header 1.06 ();
@@ -463,6 +463,9 @@ I<all> occurences of the field are returned:
     ### Get all 'Received:' entries:
     my @all_received = $head->get('received');
 
+B<NOTE>: The header(s) returned may end with a newline.  If you don't
+want this, then B<chomp> the return value.
+
 =cut
 
 ### Inherited.
@@ -765,7 +768,8 @@ sub multipart_boundary {
 
 I<Instance method.>
 Return the recommended external filename.  This is used when
-extracting the data from the MIME stream.
+extracting the data from the MIME stream.  The filename is always
+returned as a string in Perl's internal format (the UTF8 flag may be on!)
 
 Returns undef if no filename could be suggested.
 
@@ -777,12 +781,13 @@ sub recommended_filename
 
 	# Try these headers in order, taking the first defined,
 	# non-blank one we find.
+	my $wd = supported MIME::WordDecoder 'UTF-8';
 	foreach my $attr_name ( qw( content-disposition.filename content-type.name ) ) {
 		my $value = $self->mime_attr( $attr_name );
 		if ( defined $value
 		    && $value ne ''
 		    && $value =~ /\S/ ) {
-			return $value;
+			return $wd->decode($value);
 		}
 	}
 
