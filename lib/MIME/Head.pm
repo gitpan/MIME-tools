@@ -138,7 +138,7 @@ use MIME::Field::ContType;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.501";
+$VERSION = "5.502";
 
 ### Sanity (we put this test after our own version, for CPAN::):
 use Mail::Header 1.06 ();
@@ -366,7 +366,7 @@ B<Note:> currently, the decodings are done without regard to the
 character set: thus, the Q-encoding C<=F8> is simply translated to the
 octet (hexadecimal C<F8>), period.  For piece-by-piece decoding
 of a given field, you want the array context of
-C<MIME::Word::decode_mimewords()>.
+C<MIME::Words::decode_mimewords()>.
 
 B<Warning:> the CRLF+SPACE separator that splits up long encoded words
 into shorter sequences (see the Subject: example above) gets lost

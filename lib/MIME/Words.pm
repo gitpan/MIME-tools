@@ -93,7 +93,7 @@ use MIME::QuotedPrint;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.501";
+$VERSION = "5.502";
 
 ### Nonprintables (controls + x7F + 8bit):
 my $NONPRINT = "\\x00-\\x1F\\x7F-\\xFF";
@@ -215,7 +215,7 @@ sub decode_mimewords {
 			 (.*?    #   shortest possible string,
 			  \n*)             #   followed by 0 or more NLs,
 		         (?=(\Z|=\?))      # terminated by "=?" or EOS
-			}xg) {
+			}sxg) {
 	    length($1) or die "MIME::Words: internal logic err: empty token\n";
 	    push @tokens, [$1];
 	    next;
