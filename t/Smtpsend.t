@@ -1,7 +1,18 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
-use Test::More tests => 9;
+use Config;
+use Test::More;
+my $can_fork = $Config{d_fork} || $Config{d_pseudofork} ||
+		(($^O eq 'MSWin32' || $^O eq 'NetWare') and
+		$Config{useithreads} and 
+		$Config{ccflags} =~ /-DPERL_IMPLICIT_SYS/);
+if ($can_fork) {
+	plan tests => 9;
+}
+else {
+	plan skip_all => 'This system cannot fork';
+}
 
 use MIME::Tools;
 use MIME::Entity;
@@ -34,6 +45,7 @@ if (!defined($pid)) {
 
 if (!$pid) {
 	# In the child
+	sleep(1);
 	$top->smtpsend(Host => '127.0.0.1',
 		       Port => 5225);
 	exit(0);
@@ -42,8 +54,12 @@ if (!$pid) {
 # In the parent
 my $s = $sock->accept();
 if (!$s) {
-	kill(9, $pid);
-	die("accept failed: $!");
+	sleep(1);
+	$s = $sock->accept();
+	if (!$s) {
+		kill(9, $pid);
+		die("accept failed: $!");
+	}
 }
 
 $s->print("220 Go ahead\n");

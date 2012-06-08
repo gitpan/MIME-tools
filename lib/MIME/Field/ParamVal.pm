@@ -60,6 +60,7 @@ require 5.001;
 
 # Pragmas:
 use strict;
+use re 'taint';
 use vars qw($VERSION @ISA);
 
 
@@ -79,7 +80,7 @@ use MIME::Tools qw(:config :msgs);
 #------------------------------
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.502";
+$VERSION = "5.503";
 
 
 #------------------------------
